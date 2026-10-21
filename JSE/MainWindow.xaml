@@ -1,0 +1,89 @@
+<Window x:Class="JSE.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="JSE — AssistDriftCarFH5" Height="760" Width="1040" MinHeight="680" MinWidth="920"
+        Background="#0B111B" Foreground="#E8EEF8" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <SolidColorBrush x:Key="Panel" Color="#121B2A"/>
+        <SolidColorBrush x:Key="Muted" Color="#8EA0BA"/>
+        <SolidColorBrush x:Key="Accent" Color="#4DE1B2"/>
+        <Style TargetType="TextBlock"><Setter Property="FontFamily" Value="Segoe UI"/></Style>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="#07120F"/><Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="BorderThickness" Value="0"/><Setter Property="Padding" Value="18,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="Slider"><Setter Property="Foreground" Value="{StaticResource Accent}"/><Setter Property="Margin" Value="0,5,0,0"/></Style>
+    </Window.Resources>
+    <Grid Margin="28">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="18"/><RowDefinition Height="*"/><RowDefinition Height="18"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="JSE" FontSize="13" Foreground="{StaticResource Accent}" FontWeight="Bold"/>
+                <TextBlock Text="AssistDriftCarFH5" FontSize="30" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                <TextBlock Text="Assistência de contraesterço por telemetria para Forza Horizon 5" Foreground="{StaticResource Muted}" Margin="0,4,0,0"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button x:Name="AssistButton" Content="Assistência ligada" Click="AssistButton_Click" Margin="0,0,10,0"/>
+                <Button x:Name="ConnectButton" Content="Conectar" Click="ConnectButton_Click" Background="#27364C" Foreground="#E8EEF8"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="1.1*"/><ColumnDefinition Width="18"/><ColumnDefinition Width="1.4*"/></Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="STATUS AO VIVO" Foreground="{StaticResource Muted}" FontWeight="SemiBold" FontSize="12" Margin="4,0,0,9"/>
+                <Border Background="{StaticResource Panel}" CornerRadius="12" Padding="18">
+                    <Grid>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="12"/><RowDefinition Height="Auto"/><RowDefinition Height="18"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <StackPanel><TextBlock Text="CONTROLE" Foreground="{StaticResource Muted}" FontSize="11"/><TextBlock x:Name="ControllerStatus" Text="Desconectado" FontSize="17" Margin="0,4,0,0"/></StackPanel>
+                            <StackPanel Grid.Column="1"><TextBlock Text="TELEMETRIA UDP" Foreground="{StaticResource Muted}" FontSize="11"/><TextBlock x:Name="TelemetryStatus" Text="Aguardando :20777" FontSize="17" Margin="0,4,0,0"/></StackPanel>
+                        </Grid>
+                        <Separator Grid.Row="2" Background="#27364C"/>
+                        <Grid Grid.Row="4">
+                            <Grid.RowDefinitions><RowDefinition/><RowDefinition Height="12"/><RowDefinition/></Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <StackPanel><TextBlock Text="VELOCIDADE" Foreground="{StaticResource Muted}" FontSize="11"/><TextBlock x:Name="SpeedValue" Text="0.0 km/h" FontSize="23" Margin="0,3,0,0"/></StackPanel>
+                            <StackPanel Grid.Column="1"><TextBlock Text="YAW RATE" Foreground="{StaticResource Muted}" FontSize="11"/><TextBlock x:Name="YawValue" Text="0.000 rad/s" FontSize="23" Margin="0,3,0,0"/></StackPanel>
+                            <StackPanel Grid.Row="2"><TextBlock Text="BODY SLIP" Foreground="{StaticResource Muted}" FontSize="11"/><TextBlock x:Name="SlipValue" Text="0.000 rad" FontSize="23" Margin="0,3,0,0"/></StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="1"><TextBlock Text="BLEND DA ASSISTÊNCIA" Foreground="{StaticResource Muted}" FontSize="11"/><TextBlock x:Name="BlendValue" Text="0%" FontSize="23" Margin="0,3,0,0"/></StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+                <TextBlock Text="DIREÇÃO" Foreground="{StaticResource Muted}" FontWeight="SemiBold" FontSize="12" Margin="4,22,0,9"/>
+                <Border Background="{StaticResource Panel}" CornerRadius="12" Padding="18">
+                    <StackPanel>
+                        <Grid><TextBlock Text="Entrada física"/><TextBlock x:Name="RawSteerValue" Text="0.000" HorizontalAlignment="Right" Foreground="{StaticResource Muted}"/></Grid>
+                        <ProgressBar x:Name="RawSteerBar" Minimum="-1" Maximum="1" Value="0" Height="8" Margin="0,8,0,16"/>
+                        <Grid><TextBlock Text="Saída corrigida"/><TextBlock x:Name="OutputSteerValue" Text="0.000" HorizontalAlignment="Right" Foreground="{StaticResource Muted}"/></Grid>
+                        <ProgressBar x:Name="OutputSteerBar" Minimum="-1" Maximum="1" Value="0" Height="8" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#101927" CornerRadius="10" Padding="14" Margin="0,18,0,0">
+                    <TextBlock Foreground="{StaticResource Muted}" TextWrapping="Wrap" LineHeight="20">No FH5: Configurações → HUD e Jogabilidade → Saída de dados = Ligado; IP = 127.0.0.1; Porta = 20777; formato = Dash.</TextBlock>
+                </Border>
+            </StackPanel>
+            <Border Grid.Column="2" Background="{StaticResource Panel}" CornerRadius="12" Padding="20">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="AJUSTES DA ASSISTÊNCIA" Foreground="{StaticResource Muted}" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,15"/>
+                        <TextBlock Text="Gyro strength"/><Slider x:Name="GyroSlider" Minimum="0" Maximum="2" TickFrequency="0.001" ValueChanged="SettingSlider_ValueChanged"/><TextBlock x:Name="GyroText" HorizontalAlignment="Right" Foreground="{StaticResource Accent}" Margin="0,-22,0,15"/>
+                        <TextBlock Text="Counter gain"/><Slider x:Name="CounterSlider" Minimum="0" Maximum="2" TickFrequency="0.001" ValueChanged="SettingSlider_ValueChanged"/><TextBlock x:Name="CounterText" HorizontalAlignment="Right" Foreground="{StaticResource Accent}" Margin="0,-22,0,15"/>
+                        <TextBlock Text="Slip deadband"/><Slider x:Name="DeadbandSlider" Minimum="0.010" Maximum="0.300" TickFrequency="0.001" ValueChanged="SettingSlider_ValueChanged"/><TextBlock x:Name="DeadbandText" HorizontalAlignment="Right" Foreground="{StaticResource Accent}" Margin="0,-22,0,15"/>
+                        <TextBlock Text="Input smoothing"/><Slider x:Name="InputSmoothingSlider" Minimum="0" Maximum="0.950" TickFrequency="0.001" ValueChanged="SettingSlider_ValueChanged"/><TextBlock x:Name="InputSmoothingText" HorizontalAlignment="Right" Foreground="{StaticResource Accent}" Margin="0,-22,0,15"/>
+                        <TextBlock Text="Output smoothing"/><Slider x:Name="OutputSmoothingSlider" Minimum="0" Maximum="0.950" TickFrequency="0.001" ValueChanged="SettingSlider_ValueChanged"/><TextBlock x:Name="OutputSmoothingText" HorizontalAlignment="Right" Foreground="{StaticResource Accent}" Margin="0,-22,0,15"/>
+                        <TextBlock Text="Assist fade range"/><Slider x:Name="FadeSlider" Minimum="0.020" Maximum="0.200" TickFrequency="0.001" ValueChanged="SettingSlider_ValueChanged"/><TextBlock x:Name="FadeText" HorizontalAlignment="Right" Foreground="{StaticResource Accent}" Margin="0,-22,0,15"/>
+                        <TextBlock Text="Max steer rate"/><Slider x:Name="RateSlider" Minimum="0.500" Maximum="5" TickFrequency="0.001" ValueChanged="SettingSlider_ValueChanged"/><TextBlock x:Name="RateText" HorizontalAlignment="Right" Foreground="{StaticResource Accent}" Margin="0,-22,0,15"/>
+                        <TextBlock Text="Min speed km/h"/><Slider x:Name="MinSpeedSlider" Minimum="5" Maximum="80" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="SettingSlider_ValueChanged"/><TextBlock x:Name="MinSpeedText" HorizontalAlignment="Right" Foreground="{StaticResource Accent}" Margin="0,-22,0,6"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="4">
+            <TextBlock x:Name="FooterStatus" Text="Pronto. Conecte o controle antes de iniciar." Foreground="{StaticResource Muted}" VerticalAlignment="Center"/>
+            <TextBlock Text="Configuração salva automaticamente" Foreground="{StaticResource Muted}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</Window>
